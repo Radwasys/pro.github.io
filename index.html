@@ -2,27 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta http-emicPicuiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>chat app</title>
-  
-  <!-- HTML -->
-  
 
-  
-  
 </head>
 
 <body>
-	<div id="big">
-		<button id="rec" onclick="de()" ><img id="q" src="download.png" alt="record"></button>
+	<div id="container">
+		<button id="recordButton" onclick="recordAudio()" ><img id="micPic" src="download.png" alt="record"></button>
 		
-	<input type="text" id="type" placeholder="Type text">
-	<button id="btn" > <img id="t" src="send icon.jpg" alt="send"></button>
+	<input type="text" id="typeMessage" placeholder="Type Message">
+	<button id="sendButton" > <img id="sendPic" src="send icon.jpg" alt="send"></button>
 </div>
 <style>
-	#t,#q{
+	#sendPic,#micPic{
 			width:40px;
 			height:40px;
 			border-radius:30px;
@@ -30,24 +25,24 @@
 		}
 
 
-		#btn,#rec{
+		#sendButton,#recordButton{
 			background-color:white;
 			position:absolute;
 			border-radius:30px;
 			width:50px;
 			height:50px;
 			outline:none;
-			margin-top:450px;
+			
 
 
 		}
 
-		#btn{
+		#sendButton{
 			margin-left:350px;
 		}
 
-		#type{
-			height:40px;
+		#typeMessage{
+			height:50px;
 			width:300px;
 			margin-left:50px;
 			position:absolute;
@@ -56,18 +51,18 @@
 			
 		}
 
-		#type,#btn{
-			margin-top:450px;
+		#typeMessage,#sendButton{
+			
 			border-radius:30px;
 
 		}
 
-		#big{
+		#container{
 			position:relative;
 			margin-left:450px;
 			width:400px;
-			height:500px;
-			margin-top:50px;
+			height:600px;
+			margin-bottom:0;
 			border:black 1px solid;
 			
 			background-color:black;
@@ -93,7 +88,7 @@
 
 		@media screen and (max-width: 833px) {
 
-			#big{
+			#container{
 				width:100%;
 				height:100%;
 				margin:0 0 0 0;
@@ -112,7 +107,7 @@
 				margin:0 0 0 0;
 			}
 
-			#rec{
+			#recordButton{
 				display:block;
 				background-color:white;
 				position:absolute;
@@ -124,12 +119,12 @@
 				
 			}
 
-			#q,#t{
+			#micPic,#sendPic{
 				width:40px;
 				height:40px;
 			}
 
-			#type{
+			#typeMessage{
 
 				height:50px;
 				width:69%;
@@ -142,7 +137,7 @@
 				
 			}
 
-			#btn{
+			#sendButton{
 				background-color:white;
 				position:absolute;
 				border-radius:30px;
@@ -162,38 +157,39 @@
 		}
 		</style>
   <script>
-    	var btn = document.getElementById("btn")
-		var type = document.getElementById("type")
-		var big = document.getElementById("big")
+    	var sendButton = document.getElementById("sendButton")
+		var typeMessage = document.getElementById("typeMessage")
+		var container = document.getElementById("container")
 		
-		var rec = document.getElementById("rec")
-		var array = []
+		var recordButton = document.getElementById("recordButton")
+		var messages = []
 
 
-		var ma = big.offsetHeight
-		ma = window.innerHeight
-		btn.style.marginTop = (ma - 50) + "px"
-		type.style.marginTop = (ma - 50) + "px"
-		rec.style.marginTop = (ma - 50) + "px"
+		var height = container.offsetHeight
+		
+		sendButton.style.marginTop = (height - 50) + "px"
+		typeMessage.style.marginTop = (height - 50) + "px"
+		recordButton.style.marginTop = (height - 50) + "px"
+		
 
 
-		btn.addEventListener("click",function() {
-			if(type.value == "") {
+		sendButton.addEventListener("click",function() {
+			if(typeMessage.value == "") {
 				alert("write a message")
 			} else {
 
-				if(array.length > 13) {
+				if(messages.length > 13) {
 					alert("you have to clear messages first")
 					return false
 				}
 
-			var mess = document.createElement("div")
-			array.push(mess)
+			var newMessage = document.createElement("div")
+			messages.push(newMessage)
 			
-			big.appendChild(mess)
-			mess.classList.add("me")
-			mess.innerHTML = 'You:  ' + type.value
-			type.value = ""
+			container.appendChild(newMessage)
+			newMessage.classList.add("me")
+			newMessage.innerHTML = 'You:  ' + typeMessage.value
+			typeMessage.value = ""
 
 
 			
@@ -202,27 +198,27 @@
 
 		addEventListener("keypress",function(e) {
 			if(e.key === "Enter") {
-			if(type.value == "") {
+			if(typeMessage.value == "") {
 				alert("write a message")
 			} else {
-				if(array.length > 13) {
+				if(messages.length > 13) {
 					alert("you have to clear messages first")
 					return false
 					
 				}
-			var mess = document.createElement("div")
-			array.push(mess)
+			var newMessage = document.createElement("div")
+			messages.push(newMessage)
 			
-			big.appendChild(mess)
-			mess.classList.add("me")
-			mess.innerHTML = 'You:  ' + type.value
-			type.value = ""
+			container.appendChild(newMessage)
+			newMessage.classList.add("me")
+			newMessage.innerHTML = 'You:  ' + typeMessage.value
+			typeMessage.value = ""
 
 
 		}}
 		})
 
-		function de() {
+		function recordAudio() {
 			alert("recording will stop after 3 seconds")
 			navigator.mediaDevices.getUserMedia({audio: true})
 			.then(stream => {
@@ -241,7 +237,7 @@
 					audio.src = url
 					audio.controls = true
 					audio.setAttribute('id','ay')
-					big.appendChild(audio)
+					container.appendChild(audio)
 
 				})
 
