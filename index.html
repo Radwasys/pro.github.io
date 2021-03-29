@@ -10,13 +10,29 @@
 </head>
 
 <body>
+	
+	<button id="back">BACK</button>
 	<div id="container">
+		<button id="back2">BACK</button>
 		<button id="recordButton" onclick="recordAudio()" ><img id="micPic" src="download.png" alt="record"></button>
 		
 	<input type="text" id="typeMessage" placeholder="Type Message">
 	<button id="sendButton" > <img id="sendPic" src="send icon.jpg" alt="send"></button>
+
 </div>
+
+
+<div id="homepage">
+  <h1>Welcome!</h1>
+  <p id="p1">Choose what you would like to identify</p>
+  <button id="speech">Speech</button>
+  <p id="p2">The app recognizes what is being said <br> and dispalys it on the screen as words</p>
+  <button id="sound">Sound</button>
+  <p id="p3">Record a sound or a helper on this app <br>and you will recieve a respnse<br> identifying the sound in a short time</p>
+</div>
+
 <style>
+	/*styling of audio recognizing page*/
 	#sendPic,#micPic{
 			width:40px;
 			height:40px;
@@ -42,7 +58,7 @@
 		}
 
 		#typeMessage{
-			height:50px;
+			height:40px;
 			width:300px;
 			margin-left:50px;
 			position:absolute;
@@ -64,7 +80,7 @@
 			height:600px;
 			margin-bottom:0;
 			border:black 1px solid;
-			
+			display:none;
 			background-color:black;
 		}
 
@@ -86,9 +102,90 @@
 
 		}
 
+		#back{
+			position:absolute;
+			margin-left:398px;
+			background-color:black;
+			color:white;
+			height:30px;
+			border:black solid 1px;
+			border-radius:5px 0 0 5px;
+			outline:none;
+			display:none;
+		}
+
+		#back2{
+			display:none;
+			background-color:black;
+			color:white;
+			height:30px;
+			border:black solid 1px;
+			border-radius:5px 0 0 5px;
+			outline:none;
+			
+		}
+
+		/*styling of homepage*/
+
+		#homepage{
+			position:relative;
+			margin-left:450px;
+			width:400px;
+			height:600px;
+			margin-bottom:0;
+			border:black 1px solid;
+			display:block;
+			background-color:black;
+		}
+
+		h1{
+			color:white;
+			text-align:center;
+		}
+
+		#p1{
+			color:#656769;
+			text-align:center;
+			font-size:20px;
+		}
+
+		#speech{
+			width:95%;
+			height:70px;
+			text-align:center;
+			border:2px solid white;
+			border-radius:30px;
+			color:white;
+			
+			background-color:black;
+			outline:none;
+			margin-top:50px;
+			margin-left:10px;
+		}
+
+		#p2,#p3{
+			color:#656769;
+			text-align:center;
+
+		}
+
+		#sound{
+			width:95%;
+			height:70px;
+			text-align:center;
+			border:2px solid white;
+			border-radius:30px;
+			color:white;
+			
+			background-color:black;
+			outline:none;
+			margin-top:85px;
+			margin-left:10px;
+		}
+
 		@media screen and (max-width: 833px) {
 
-			#container{
+			#container,#homepage{
 				width:100%;
 				height:100%;
 				margin:0 0 0 0;
@@ -126,7 +223,7 @@
 
 			#typeMessage{
 
-				height:50px;
+				height:40px;
 				width:69%;
 				margin-left:50px;
 				position:absolute;
@@ -150,28 +247,74 @@
 
 			.me{
 				height:40px;
+
 			}
 
+			#back{
+				display:none;
+			}
 
 			
+
+			h1{
+				color:white;
+				text-align:center;
+			}
+
+			#p1{
+				color:#656769;
+				text-align:center;
+				font-size:20px;
+			}
+
+			#speech{
+				width:95%;
+				height:70px;
+				text-align:center;
+				border:2px solid white;
+				border-radius:30px;
+				color:white;
+				
+				background-color:black;
+				outline:none;
+				margin-top:50px;
+				margin-left:10px;
+			}
+
+			#p2,#p3{
+				color:#656769;
+				text-align:center;
+
+			}
+
+			#sound{
+				width:95%;
+				height:70px;
+				text-align:center;
+				border:2px solid white;
+				border-radius:30px;
+				color:white;
+				
+				background-color:black;
+				outline:none;
+				margin-top:85px;
+				margin-left:10px;
+			}
+
 		}
 		</style>
   <script>
     	var sendButton = document.getElementById("sendButton")
 		var typeMessage = document.getElementById("typeMessage")
 		var container = document.getElementById("container")
-		
+		var homepage = document.getElementById("homepage")
+		var speech = document.getElementById("speech")
+		var back = document.getElementById("back")
+		var backt = document.getElementById("back2")
 		var recordButton = document.getElementById("recordButton")
+		var sound = document.getElementById("sound")
 		var messages = []
-
-
-		var height = container.offsetHeight
 		
-		sendButton.style.marginTop = (height - 50) + "px"
-		typeMessage.style.marginTop = (height - 50) + "px"
-		recordButton.style.marginTop = (height - 50) + "px"
-		
-
 
 		sendButton.addEventListener("click",function() {
 			if(typeMessage.value == "") {
@@ -187,6 +330,11 @@
 			messages.push(newMessage)
 			
 			container.appendChild(newMessage)
+			if (window.innerWidth < 818) {
+			var mes = messages[0]
+				
+			mes.style.marginTop = 30 + 'px'
+			}
 			newMessage.classList.add("me")
 			newMessage.innerHTML = 'You:  ' + typeMessage.value
 			typeMessage.value = ""
@@ -206,11 +354,18 @@
 					return false
 					
 				}
+
+
 			var newMessage = document.createElement("div")
 			messages.push(newMessage)
 			
 			container.appendChild(newMessage)
 			newMessage.classList.add("me")
+			if (window.innerWidth < 818) {
+			var mes = messages[0]
+			
+			mes.style.marginTop = 10 + 'px'
+		}
 			newMessage.innerHTML = 'You:  ' + typeMessage.value
 			typeMessage.value = ""
 
@@ -250,6 +405,39 @@
 				alert("please allow mic")
 			})
 		}
+
+		sound.addEventListener("click", function () {
+			homepage.style.display = 'none'
+			back.style.display = 'block'
+			container.style.display = 'block'
+
+
+			var height = container.offsetHeight
+		
+		    sendButton.style.marginTop = (height - 50) + "px"
+		    typeMessage.style.marginTop = (height - 50) + "px"
+		    recordButton.style.marginTop = (height - 50) + "px"
+		    if (window.innerWidth < 818) {
+		    	back.style.display = 'none'
+		    	backt.style.display = 'block'
+
+		    }
+		    
+		})
+
+		back.addEventListener("click", function () {
+			homepage.style.display = 'block'
+
+			container.style.display = 'none'
+		})
+
+		backt.addEventListener("click", function () {
+			homepage.style.display = 'block'
+
+			container.style.display = 'none'
+		})
+
+
   </script>
 </body>
 </html>
