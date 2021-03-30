@@ -14,6 +14,7 @@
 	<button id="back">BACK</button>
 	<div id="container">
 		<button id="back2">BACK</button>
+		<button id="stop">STOP</button>
 		<button id="recordButton" onclick="recordAudio()" ><img id="micPic" src="download.png" alt="record"></button>
 		
 	<input type="text" id="typeMessage" placeholder="Type Message">
@@ -28,7 +29,7 @@
   <button id="speech">Speech</button>
   <p id="p2">The app recognizes what is being said <br> and dispalys it on the screen as words</p>
   <button id="sound">Sound</button>
-  <p id="p3">Record a sound or a helper on this app <br>and you will recieve a respnse<br> identifying the sound in a short time</p>
+  <p id="p3">Record a sound or a helper on this app <br>and you will recieve a response<br> identifying the sound in a short time</p>
 </div>
 
 <style>
@@ -114,7 +115,9 @@
 			display:none;
 		}
 
-		#back2{
+
+
+		#back2,#stop{
 			display:none;
 			background-color:black;
 			color:white;
@@ -124,6 +127,10 @@
 			outline:none;
 			
 		}
+
+
+
+
 
 		/*styling of homepage*/
 
@@ -183,6 +190,8 @@
 			margin-left:10px;
 		}
 
+
+
 		@media screen and (max-width: 833px) {
 
 			#container,#homepage{
@@ -212,7 +221,7 @@
 				width:50px;
 				height:50px;
 				outline:none;
-				margin-top:130%;
+				
 				
 			}
 
@@ -301,6 +310,11 @@
 				margin-left:10px;
 			}
 
+			#stop{
+				margin-left:80%;
+				margin-top:-30px;
+			}
+
 		}
 		</style>
   <script>
@@ -313,7 +327,45 @@
 		var backt = document.getElementById("back2")
 		var recordButton = document.getElementById("recordButton")
 		var sound = document.getElementById("sound")
+		var stop = document.getElementById("stop")
 		var messages = []
+
+
+		function recordAudio() {
+			
+			navigator.mediaDevices.getUserMedia({audio: true})
+			.then(stream => {
+				stop.style.display = 'block'
+				var mediaRecorder = new MediaRecorder(stream)
+				mediaRecorder.start()
+				var mediaChunks = []
+				mediaRecorder.addEventListener("dataavailable",function (e) {
+					
+					mediaChunks.push(e.data)
+				})
+
+				mediaRecorder.addEventListener("stop",function () {
+					var mediaBlob = new Blob(mediaChunks)
+					var url = URL.createObjectURL(mediaBlob)
+					var audio = document.createElement("AUDIO")
+					messages.push(audio)
+					audio.src = url
+					audio.controls = true
+					audio.setAttribute('id','ay')
+					container.appendChild(audio)
+					stop.style.display = 'none'
+
+				})
+
+				stop.addEventListener("click", function () {
+					mediaRecorder.stop()
+				})
+			})
+			.catch(error => {
+				alert("please allow mic")
+			})
+		}
+
 		
 
 		sendButton.addEventListener("click",function() {
@@ -373,38 +425,6 @@
 		}}
 		})
 
-		function recordAudio() {
-			alert("recording will stop after 3 seconds")
-			navigator.mediaDevices.getUserMedia({audio: true})
-			.then(stream => {
-				var mediaRecorder = new MediaRecorder(stream)
-				mediaRecorder.start()
-				var mediaChunks = []
-				mediaRecorder.addEventListener("dataavailable",function (e) {
-					
-					mediaChunks.push(e.data)
-				})
-
-				mediaRecorder.addEventListener("stop",function () {
-					var mediaBlob = new Blob(mediaChunks)
-					var url = URL.createObjectURL(mediaBlob)
-					var audio = document.createElement("AUDIO")
-					audio.src = url
-					audio.controls = true
-					audio.setAttribute('id','ay')
-					container.appendChild(audio)
-
-				})
-
-				setTimeout(function() {
-					mediaRecorder.stop()
-					
-				},3000)
-			})
-			.catch(error => {
-				alert("please allow mic")
-			})
-		}
 
 		sound.addEventListener("click", function () {
 			homepage.style.display = 'none'
@@ -414,12 +434,13 @@
 
 			var height = container.offsetHeight
 		
-		    sendButton.style.marginTop = (height - 50) + "px"
-		    typeMessage.style.marginTop = (height - 50) + "px"
-		    recordButton.style.marginTop = (height - 50) + "px"
+		    sendButton.style.marginTop = (height - 80) + "px"
+		    typeMessage.style.marginTop = (height - 80) + "px"
+		    recordButton.style.marginTop = (height - 80) + "px"
 		    if (window.innerWidth < 818) {
 		    	back.style.display = 'none'
 		    	backt.style.display = 'block'
+		    	
 
 		    }
 		    
@@ -435,6 +456,10 @@
 			homepage.style.display = 'block'
 
 			container.style.display = 'none'
+		})
+
+		speech.addEventListener("click", function () {
+			alert("This feauture will be added soon")
 		})
 
 
